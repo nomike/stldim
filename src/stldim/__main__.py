@@ -15,7 +15,7 @@ import os
 import sys
 
 import stldim.version as version
-from .stldim import get_varname, get_stl_dimensions
+from stldim import get_varname, get_stl_dimensions
 
 def main():
     parser = argparse.ArgumentParser(prog="stldim",
@@ -31,7 +31,7 @@ def main():
 
     if not os.path.exists(args.stlfile):
         sys.exit(f'ERROR: file args.stlfile was not found!')
-    varname = get_varname(args)
+    varname = get_varname(args.stlfile)
 
     stl_dimensions = get_stl_dimensions(args.stlfile)
 
