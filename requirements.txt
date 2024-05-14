@@ -1,1 +1,1 @@
-stl
+numpy-stl
