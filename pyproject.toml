@@ -32,7 +32,7 @@ classifiers = [
 ]
 
 [project.scripts]
-stldim = "stldim:main"
+stldim = "stldim.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/nomike/stldim"
