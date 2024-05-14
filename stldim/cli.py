@@ -14,9 +14,10 @@ import argparse
 import os
 import re
 import sys
+import stldim._version
 
 import stl
-from stl import mesh
+# from stl import mesh
 
 
 def sanitize_filename(args):
@@ -55,16 +56,16 @@ def find_mins_maxs(obj):
 
 
 def main():
-    parser = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(prog="stldim",
         description="Get dimensions of an STL file")
 
     parser.add_argument("stlfile", type=str, help="Path to the STL file")
-    parser.add_argument("--version", action="version", version="%(prog)s 0.5",
-                        help="Display version information")
+    parser.add_argument("--version", action="version", help="Show version", version=stldim._version.__str__)
     parser.add_argument("--name", type=str, default=None,
                         help="Name of the object (defaults to filename with special characters replaced by underscores")
 
     args = parser.parse_args()
+
     if not os.path.exists(args.stlfile):
         sys.exit('ERROR: file %s was not found!' % args.stlfile)
     varname = get_varname(args)
