@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    stldim - get the dimensions of an STL file
+    stldim - Get dimensions of an STL file
     Usage:
         stldim.py [options] <stlfile>
 
@@ -17,7 +17,7 @@ import sys
 import stldim._version
 
 import stl
-# from stl import mesh
+from stl import mesh
 
 
 def sanitize_filename(args):
