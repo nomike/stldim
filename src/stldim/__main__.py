@@ -31,7 +31,7 @@ def main():
 
     if not os.path.exists(args.stlfile):
         sys.exit(f'ERROR: file args.stlfile was not found!')
-    varname = get_varname(args.stlfile)
+    varname = get_varname(args.stlfile, args.name)
 
     stl_dimensions = get_stl_dimensions(args.stlfile)
 

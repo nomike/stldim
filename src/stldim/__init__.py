@@ -12,11 +12,11 @@ def sanitize_filename(stlfile):
     return re.sub(r'\W', '_', os.path.basename(stlfile)).lower()
 
 
-def get_varname(args):
-    if args.name:
-        return args.name
+def get_varname(filename, name):
+    if name:
+        return name
     else:
-        return sanitize_filename(args)
+        return sanitize_filename(filename)
 
 
 def find_mins_maxs(obj):
