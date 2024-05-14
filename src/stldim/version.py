@@ -1,7 +1,7 @@
 __author__ = "nomike Postmann"
 __copyright__ = "Copyright 2024 nomike Postmann"
 __email__ = "nomike@nomike.com"
-__license__ = "LGPL3"
+__license__ = "MIT"
 __title__ = "stldim"
 __version__ = "0.0.1a8"
 
