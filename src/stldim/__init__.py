@@ -9,7 +9,12 @@ def sanitize_filename(stlfile):
     """
     Replace every non-alphanumeric character with an underscore
     """
-    return re.sub(r'\W', '_', os.path.basename(stlfile)).lower()
+    
+    sanitized = re.sub(r'\W', '_', os.path.basename(stlfile)).lower()
+    match = re.search(r"\D", sanitized)
+    if match:
+        return "_" * (match.start()) + sanitized[match.start():]
+    return sanitized
 
 
 def get_varname(filename, name):
