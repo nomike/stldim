@@ -54,6 +54,31 @@ def find_mins_maxs(obj):
             minz = min(p[stl.Dimension.Z], minz)
     return minx, maxx, miny, maxy, minz, maxz
 
+def get_stl_dimensions(stlfile):
+    # find the max dimensions, so we can know the bounding box, getting the height,
+    # width, length (because these are the step size)...
+    stl_dimensions = {}
+
+    main_body = mesh.Mesh.from_file(stlfile)
+
+    stl_dimensions['minx'], stl_dimensions['maxx'], stl_dimensions['miny'], stl_dimensions['maxy'], stl_dimensions['minz'], stl_dimensions['maxz'] = find_mins_maxs(main_body)
+
+    stl_dimensions['minx'] = round(stl_dimensions['minx'], 3)
+    stl_dimensions['maxx'] = round(stl_dimensions['maxx'], 3)
+    stl_dimensions['miny'] = round(stl_dimensions['miny'], 3)
+    stl_dimensions['maxy'] = round(stl_dimensions['maxy'], 3)
+    stl_dimensions['minz'] = round(stl_dimensions['minz'], 3)
+    stl_dimensions['maxz'] = round(stl_dimensions['maxz'], 3)
+
+    stl_dimensions['xsize'] = round(stl_dimensions['maxx']-stl_dimensions['minx'], 3)
+    stl_dimensions['ysize'] = round(stl_dimensions['maxy']-stl_dimensions['miny'], 3)
+    stl_dimensions['zsize'] = round(stl_dimensions['maxz']-stl_dimensions['minz'], 3)
+
+    stl_dimensions['midx'] = round(stl_dimensions['xsize']/2, 3)
+    stl_dimensions['midy'] = round(stl_dimensions['ysize']/2, 3)
+    stl_dimensions['midz'] = round(stl_dimensions['zsize']/2, 3)
+
+    return stl_dimensions
 
 def main():
     parser = argparse.ArgumentParser(prog="stldim",
@@ -67,32 +92,11 @@ def main():
     args = parser.parse_args()
 
     if not os.path.exists(args.stlfile):
-        sys.exit('ERROR: file %s was not found!' % args.stlfile)
+        sys.exit(f'ERROR: file args.stlfile was not found!')
     varname = get_varname(args)
 
-    main_body = mesh.Mesh.from_file(args.stlfile)
+    stl_dimensions = get_stl_dimensions(args.stlfile)
 
-    # find the max dimensions, so we can know the bounding box, getting the height,
-    # width, length (because these are the step size)...
-
-    main_body = mesh.Mesh.from_file(args.stlfile)
-
-    minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(main_body)
-
-    minx = round(minx, 3)
-    maxx = round(maxx, 3)
-    miny = round(miny, 3)
-    maxy = round(maxy, 3)
-    minz = round(minz, 3)
-    maxz = round(maxz, 3)
-
-    xsize = round(maxx-minx, 3)
-    ysize = round(maxy-miny, 3)
-    zsize = round(maxz-minz, 3)
-
-    midx = round(xsize/2, 3)
-    midy = round(ysize/2, 3)
-    midz = round(zsize/2, 3)
 
 # the logic is easy from there
 
@@ -100,18 +104,18 @@ def main():
     lst = ['obj =("', args.stlfile, '");']
     obj = ['\t\timport("', args.stlfile, '");']
 
-    print("// X size:", xsize)
-    print(f"{varname}_xsize = {xsize};")
-    print("// Y size:", ysize)
-    print(f"{varname}_ysize = {ysize};")
-    print("// Z size:", zsize)
-    print(f"{varname}_zsize = {zsize};")
-    print("// X position:", minx)
-    print(f"{varname}_xposition = {minx};")
-    print("// Y position:", miny)
-    print(f"{varname}_yposition = {miny};")
-    print("// Z position:", minz)
-    print(f"{varname}_zposition = {minz};")
+    print("// X size:", stl_dimensions['xsize'])
+    print(f"{varname}_xsize = {stl_dimensions['xsize']};")
+    print("// Y size:", stl_dimensions['ysize'])
+    print(f"{varname}_ysize = {stl_dimensions['ysize']};")
+    print("// Z size:", stl_dimensions['zsize'])
+    print(f"{varname}_zsize = {stl_dimensions['zsize']};")
+    print("// X position:", stl_dimensions['minx'])
+    print(f"{varname}_xposition = {stl_dimensions['minx']};")
+    print("// Y position:", stl_dimensions['miny'])
+    print(f"{varname}_yposition = {stl_dimensions['miny']};")
+    print("// Z position:", stl_dimensions['minz'])
+    print(f"{varname}_zposition = {stl_dimensions['minz']};")
 
     # --------------------
     print("NE=1; NW=2; SW=3; SE=4; CTR=5; CTRXY=6;")
@@ -123,38 +127,38 @@ def main():
     print("")
 
     print("\tif (where == NW) {")
-    print("\t\ttranslate([", -xsize, ",", 0, ",", 0, "])")
+    print("\t\ttranslate([", -stl_dimensions['xsize'], ",", 0, ",", 0, "])")
     print(f"\t\t{varname}_objNE ();")
     print("\t}")
     print("")
 
     print("\tif (where == SW) {")
-    print("\t\ttranslate([", -xsize, ",", -ysize, ",", 0, "])")
+    print("\t\ttranslate([", -stl_dimensions['xsize'], ",", -stl_dimensions['ysize'], ",", 0, "])")
     print(f"\t\t{varname}_objNE ();")
     print("\t}")
     print("")
 
     print("\tif (where == SE) {")
-    print("\t\ttranslate([", 0, ",", -ysize, ",", 0, ",", "])")
+    print("\t\ttranslate([", 0, ",", -stl_dimensions['ysize'], ",", 0, ",", "])")
     print(f"\t\t{varname}_objNE ();")
     print("\t}")
     print("")
 
     print("\tif (where == CTR) {")
-    print("\ttranslate([", -midx, ",", -midy, ",", -midz, "])")
+    print("\ttranslate([", -stl_dimensions['midx'], ",", -stl_dimensions['midy'], ",", -stl_dimensions['midz'], "])")
     print(f"\t\t{varname}_objNE ();")
     print("\t}")
     print("")
 
     print("\tif (where == CTRXY) {")
-    print("\ttranslate([", -midx, ",", -midy, ",", 0, "])")
+    print("\ttranslate([", -stl_dimensions['midx'], ",", -stl_dimensions['midy'], ",", 0, "])")
     print(f"\t\t{varname}_objNE ();")
     print("\t}")
     print("}")
     print("")
 
     print(f"module {varname}_objNE () {{")
-    print("\ttranslate([", -minx, ",", -miny, ",", -minz, "])")
+    print("\ttranslate([", -stl_dimensions['minx'], ",", -stl_dimensions['miny'], ",", -stl_dimensions['minz'], "])")
     print("".join(obj))
     print("}")
 
