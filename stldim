@@ -59,8 +59,6 @@ def main():
         description="Get dimensions of an STL file")
 
     parser.add_argument("stlfile", type=str, help="Path to the STL file")
-#    parser.add_argument("-h", "--help", action="help", default=argparse.SUPPRESS,
-#                      help="Show this help message and exit")
     parser.add_argument("--version", action="version", version="%(prog)s 0.5",
                         help="Display version information")
     parser.add_argument("--name", type=str, default=None,
