@@ -6,5 +6,5 @@ build:
 clean:
 	rm -rf dist
 
-upload-test:
+upload-test: build
 	python3 -m twine upload --repository testpypi dist/*
