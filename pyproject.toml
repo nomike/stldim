@@ -32,11 +32,11 @@ classifiers = [
 ]
 
 [project.scripts]
-stldim = "stldim.cli:main"
+stldim = "stldim.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/nomike/stldim"
 Issues = "https://github.com/nomike/stldim/issues"
 
 [tool.hatch.version]
-path = "src/stldim/_version.py"
+path = "src/stldim/version.py"
