@@ -3,7 +3,7 @@ from stl import mesh
 import pytest
 
 def test_3dbenchy():
-    main_body = mesh.Mesh.from_file("3DBenchy.stl")
+    main_body = mesh.Mesh.from_file("tests/3DBenchy.stl")
     
     minx, maxx, miny, maxy, minz, maxz = stldim.find_mins_maxs(main_body)
     
