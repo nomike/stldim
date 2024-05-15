@@ -25,23 +25,13 @@ def get_varname(filename, name):
 
 
 def find_mins_maxs(obj):
-    minx = maxx = miny = maxy = minz = maxz = None
-    for p in obj.points:
-        # p contains (x, y, z)
-        if minx is None:
-            minx = p[stl.Dimension.X]
-            maxx = p[stl.Dimension.X]
-            miny = p[stl.Dimension.Y]
-            maxy = p[stl.Dimension.Y]
-            minz = p[stl.Dimension.Z]
-            maxz = p[stl.Dimension.Z]
-        else:
-            maxx = max(p[stl.Dimension.X], maxx)
-            minx = min(p[stl.Dimension.X], minx)
-            maxy = max(p[stl.Dimension.Y], maxy)
-            miny = min(p[stl.Dimension.Y], miny)
-            maxz = max(p[stl.Dimension.Z], maxz)
-            minz = min(p[stl.Dimension.Z], minz)
+    minx = min([p[stl.Dimension.X] for p in obj.points])
+    miny = min([p[stl.Dimension.Y] for p in obj.points])
+    minz = min([p[stl.Dimension.Z] for p in obj.points])
+    maxx = max([p[stl.Dimension.X] for p in obj.points])
+    maxy = max([p[stl.Dimension.Y] for p in obj.points])
+    maxz = max([p[stl.Dimension.Z] for p in obj.points])
+
     return minx, maxx, miny, maxy, minz, maxz
 
 
