@@ -15,7 +15,7 @@ import os
 import sys
 
 import stldim.version as version
-from stldim import get_varname, get_stl_dimensions
+from stldim import get_varname, MeshWithBounds
 
 def main():
     parser = argparse.ArgumentParser(prog="stldim",
@@ -33,7 +33,7 @@ def main():
         sys.exit(f'ERROR: file args.stlfile was not found!')
     varname = get_varname(args.stlfile, args.name)
 
-    stl_dimensions = get_stl_dimensions(args.stlfile)
+    stl_dimensions = MeshWithBounds.from_file(args.stlfile)
 
 
 # the logic is easy from there

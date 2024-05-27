@@ -107,7 +107,3 @@ def get_varname(filename, name):
         return name
     else:
         return sanitize_filename(filename)
-
-
-def get_stl_dimensions(stlfile):
-    return MeshWithBounds.from_file(stlfile)
