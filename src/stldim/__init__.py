@@ -88,6 +88,9 @@ class MeshWithBounds(mesh.Mesh):
         }
     
     def __getitem__(self, key):
+        """
+        Allow the object to be accessed like a dictionary.
+        """
         return getattr(self, key)
 
 def sanitize_filename(stlfile):
