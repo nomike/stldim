@@ -5,6 +5,94 @@ import stl
 from stl import mesh
 
 
+class MeshWithBounds(mesh.Mesh):
+    """
+    A class that extends the stl.Mesh class to include properties for the mesh's dimensions.
+    """
+    @property
+    def maxx(self):
+        """Calculate and return the maximum x of the mesh."""
+        return round(max([p[stl.Dimension.X] for p in self.points]), 3)
+    
+    @property
+    def minx(self):
+        """Calculate and return the minimum x of the mesh."""
+        return round(min([p[stl.Dimension.X] for p in self.points]), 3)
+    
+    @property
+    def maxy(self):
+        """Calculate and return the maximum y of the mesh."""
+        return round(max([p[stl.Dimension.Y] for p in self.points]), 3)
+    
+    @property
+    def miny(self):
+        """Calculate and return the minimum y of the mesh."""
+        return round(min([p[stl.Dimension.Y] for p in self.points]), 3)
+    
+    @property
+    def maxz(self):
+        """Calculate and return the maximum z of the mesh."""
+        return round(max([p[stl.Dimension.Z] for p in self.points]), 3)
+    
+    @property
+    def minz(self):
+        """Calculate and return the minimum z of the mesh."""
+        return round(min([p[stl.Dimension.Z] for p in self.points]), 3)
+    
+    @property
+    def xsize(self):
+        """Calculate and return the size of the mesh in the x direction."""
+        return round(self.maxx - self.minx, 3)
+    
+    @property
+    def ysize(self):
+        """Calculate and return the size of the mesh in the y direction."""
+        return round(self.maxy - self.miny, 3)
+    
+    @property
+    def zsize(self):
+        """Calculate and return the size of the mesh in the z direction."""
+        return round(self.maxz - self.minz, 3)
+    
+    @property
+    def midx(self):
+        """Calculate and return the midpoint of the mesh in the x direction."""
+        return round(self.xsize / 2, 3)
+    
+    @property
+    def midy(self):
+        """Calculate and return the midpoint of the mesh in the y direction."""
+        return round(self.ysize / 2, 3)
+    
+    @property
+    def midz(self):
+        """Calculate and return the midpoint of the mesh in the z direction."""
+        return round(self.zsize / 2, 3)
+    
+    @property
+    def dimensions(self):
+        """Return a dictionary of the mesh's dimensions."""
+        return {
+            'min_x': round(self.minx, 3),
+            'max_x': round(self.maxx, 3),
+            'min_y': round(self.miny, 3),
+            'max_y': round(self.maxy, 3),
+            'min_z': round(self.minz, 3),
+            'max_z': round(self.maxz, 3),
+            'x_size': round(self.xsize, 3),
+            'y_size': round(self.ysize, 3),
+            'z_size': round(self.zsize, 3),
+            'mid_x': round(self.midx, 3),
+            'mid_y': round(self.midy, 3),
+            'mid_z': round(self.midz, 3),
+        }
+    
+    def __getitem__(self, key):
+        """
+        Allow the object to be accessed like a dictionary.
+        """
+        return getattr(self, key)
+
 def sanitize_filename(stlfile):
     """
     Replace every non-alphanumeric character with an underscore
@@ -22,45 +110,3 @@ def get_varname(filename, name):
         return name
     else:
         return sanitize_filename(filename)
-
-
-def find_mins_maxs(obj):
-    minx = min([p[stl.Dimension.X] for p in obj.points])
-    miny = min([p[stl.Dimension.Y] for p in obj.points])
-    minz = min([p[stl.Dimension.Z] for p in obj.points])
-    maxx = max([p[stl.Dimension.X] for p in obj.points])
-    maxy = max([p[stl.Dimension.Y] for p in obj.points])
-    maxz = max([p[stl.Dimension.Z] for p in obj.points])
-
-    return minx, maxx, miny, maxy, minz, maxz
-
-
-def get_stl_dimensions(stlfile):
-    # find the max dimensions, so we can know the bounding box, getting the height,
-    # width, length (because these are the step size)...
-    stl_dimensions = {}
-
-    main_body = mesh.Mesh.from_file(stlfile)
-
-    stl_dimensions['minx'], stl_dimensions['maxx'], stl_dimensions['miny'], stl_dimensions[
-        'maxy'], stl_dimensions['minz'], stl_dimensions['maxz'] = find_mins_maxs(main_body)
-
-    stl_dimensions['minx'] = round(stl_dimensions['minx'], 3)
-    stl_dimensions['maxx'] = round(stl_dimensions['maxx'], 3)
-    stl_dimensions['miny'] = round(stl_dimensions['miny'], 3)
-    stl_dimensions['maxy'] = round(stl_dimensions['maxy'], 3)
-    stl_dimensions['minz'] = round(stl_dimensions['minz'], 3)
-    stl_dimensions['maxz'] = round(stl_dimensions['maxz'], 3)
-
-    stl_dimensions['xsize'] = round(
-        stl_dimensions['maxx']-stl_dimensions['minx'], 3)
-    stl_dimensions['ysize'] = round(
-        stl_dimensions['maxy']-stl_dimensions['miny'], 3)
-    stl_dimensions['zsize'] = round(
-        stl_dimensions['maxz']-stl_dimensions['minz'], 3)
-
-    stl_dimensions['midx'] = round(stl_dimensions['xsize']/2, 3)
-    stl_dimensions['midy'] = round(stl_dimensions['ysize']/2, 3)
-    stl_dimensions['midz'] = round(stl_dimensions['zsize']/2, 3)
-
-    return stl_dimensions
