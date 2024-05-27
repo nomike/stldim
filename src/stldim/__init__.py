@@ -109,16 +109,5 @@ def get_varname(filename, name):
         return sanitize_filename(filename)
 
 
-def find_mins_maxs(obj):
-    minx = min([p[stl.Dimension.X] for p in obj.points])
-    miny = min([p[stl.Dimension.Y] for p in obj.points])
-    minz = min([p[stl.Dimension.Z] for p in obj.points])
-    maxx = max([p[stl.Dimension.X] for p in obj.points])
-    maxy = max([p[stl.Dimension.Y] for p in obj.points])
-    maxz = max([p[stl.Dimension.Z] for p in obj.points])
-
-    return minx, maxx, miny, maxy, minz, maxz
-
-
 def get_stl_dimensions(stlfile):
     return MeshWithBounds.from_file(stlfile)
