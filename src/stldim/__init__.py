@@ -86,6 +86,9 @@ class MeshWithBounds(mesh.Mesh):
             'mid_y': round(self.midy, 3),
             'mid_z': round(self.midz, 3),
         }
+    
+    def __getitem__(self, key):
+        return getattr(self, key)
 
 def sanitize_filename(stlfile):
     """
@@ -118,4 +121,4 @@ def find_mins_maxs(obj):
 
 
 def get_stl_dimensions(stlfile):
-    return MeshWithBounds.from_file(stlfile).dimensions
+    return MeshWithBounds.from_file(stlfile)
