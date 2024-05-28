@@ -18,24 +18,14 @@ from docopt import docopt
 
 from stldim import MeshWithBounds, get_varname, version
 
-
-def main():
+def generate_openscad_lib(stl_dimensions, varname, stlfile):
     """
-    Main function
+    Generate an OpenSCAD library file with the dimensions of the STL file
     """
-    args = docopt(__doc__, version=version.__str__)
-
-    if not os.path.exists(args['<stlfile>']):
-        sys.exit(f"ERROR: file {args['<stlfile>']} was not found!")
-    varname = get_varname(args['<stlfile>'], args['--name'])
-
-    stl_dimensions = MeshWithBounds.from_file(args['<stlfile>'])
-
-
 # the logic is easy from there
 
-    print("// File:", args['<stlfile>'])
-    obj = ['\t\timport("', args['<stlfile>'], '");']
+    print("// File:", stlfile)
+    obj = ['\t\timport("', stlfile, '");']
 
     print("// X size:", stl_dimensions['xsize'])
     print(f"{varname}_xsize = {stl_dimensions['xsize']};")
@@ -99,6 +89,21 @@ def main():
           stl_dimensions['miny'], ",", -stl_dimensions['minz'], "])")
     print("".join(obj))
     print("}")
+
+
+def main():
+    """
+    Main function
+    """
+    args = docopt(__doc__, version=version.__str__)
+
+    if not os.path.exists(args['<stlfile>']):
+        sys.exit(f"ERROR: file {args['<stlfile>']} was not found!")
+    varname = get_varname(args['<stlfile>'], args['--name'])
+
+    stl_dimensions = MeshWithBounds.from_file(args['<stlfile>'])
+
+    generate_openscad_lib(stl_dimensions, varname, args['<stlfile>'])
 
 
 if __name__ == '__main__':
