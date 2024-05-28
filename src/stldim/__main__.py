@@ -26,7 +26,7 @@ def main():
     args = docopt(__doc__, version=version.__str__)
 
     if not os.path.exists(args['<stlfile>']):
-        sys.exit(f'ERROR: file {args['<stlfile>']} was not found!')
+        sys.exit(f"ERROR: file {args['<stlfile>']} was not found!")
     varname = get_varname(args['<stlfile>'], args['--name'])
 
     stl_dimensions = MeshWithBounds.from_file(args['<stlfile>'])
