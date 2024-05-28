@@ -23,8 +23,8 @@ def generate_openscad_lib(stl_dimensions, varname, stlfile):
     """
     Generate an OpenSCAD library file with the dimensions of the STL file
     """
-    environment = jinja2.Environment(loader=jinja2.FileSystemLoader('.'))
-    template = environment.get_template('stldim/templates/openscad_lib.jinja2')
+    environment = jinja2.Environment(loader=jinja2.PackageLoader('stldim', 'templates'))
+    template = environment.get_template('openscad_lib.jinja2')
     print(template.render(stl_dimensions=stl_dimensions, varname=varname, stlfile=stlfile))
 
 def main():
