@@ -11,42 +11,31 @@
 characters replaced with underscores].
 """
 
-import argparse
 import os
 import sys
 
-from stldim import version
-from stldim import get_varname, MeshWithBounds
+from docopt import docopt
+
+from stldim import MeshWithBounds, get_varname, version
 
 
 def main():
     """
     Main function
     """
+    args = docopt(__doc__, version=version.__str__)
 
-    parser = argparse.ArgumentParser(prog="stldim",
-                                     description="Get dimensions of an STL file")
+    if not os.path.exists(args['<stlfile>']):
+        sys.exit(f'ERROR: file {args['<stlfile>']} was not found!')
+    varname = get_varname(args['<stlfile>'], args['--name'])
 
-    parser.add_argument("stlfile", type=str, help="Path to the STL file")
-    parser.add_argument("--version", action="version",
-                        help="Show version", version=version.__str__)
-    parser.add_argument("--name", type=str, default=None,
-                        help="Name of the object (defaults to filename with special characters \
-                            replaced by underscores")
-
-    args = parser.parse_args()
-
-    if not os.path.exists(args.stlfile):
-        sys.exit(f'ERROR: file {args.stlfile} was not found!')
-    varname = get_varname(args.stlfile, args.name)
-
-    stl_dimensions = MeshWithBounds.from_file(args.stlfile)
+    stl_dimensions = MeshWithBounds.from_file(args['<stlfile>'])
 
 
 # the logic is easy from there
 
-    print("// File:", args.stlfile)
-    obj = ['\t\timport("', args.stlfile, '");']
+    print("// File:", args['<stlfile>'])
+    obj = ['\t\timport("', args['<stlfile>'], '");']
 
     print("// X size:", stl_dimensions['xsize'])
     print(f"{varname}_xsize = {stl_dimensions['xsize']};")
