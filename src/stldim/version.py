@@ -1,3 +1,7 @@
+"""
+COntains version information for the package
+"""
+
 __author__ = "nomike Postmann"
 __copyright__ = "Copyright 2024 nomike Postmann"
 __email__ = "nomike@nomike.com"
