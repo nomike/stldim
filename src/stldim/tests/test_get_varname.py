@@ -1,3 +1,7 @@
+"""
+Test the get_varname function
+"""
+
 import stldim
 
 def test_empty_varname():

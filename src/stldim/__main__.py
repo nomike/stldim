@@ -7,17 +7,23 @@
     Options:
         -h --help       Show this screen.
         --version       Show version.
-        --name=<name>   Name of the object [defaults to the filename with non alpha-numeric characters replaced with underscores].
+        --name=<name>   Name of the object [defaults to the filename with non alpha-numeric\
+characters replaced with underscores].
 """
 
 import argparse
 import os
 import sys
 
-import stldim.version as version
+from stldim import version
 from stldim import get_varname, MeshWithBounds
 
+
 def main():
+    """
+    Main function
+    """
+
     parser = argparse.ArgumentParser(prog="stldim",
                                      description="Get dimensions of an STL file")
 
@@ -25,12 +31,13 @@ def main():
     parser.add_argument("--version", action="version",
                         help="Show version", version=version.__str__)
     parser.add_argument("--name", type=str, default=None,
-                        help="Name of the object (defaults to filename with special characters replaced by underscores")
+                        help="Name of the object (defaults to filename with special characters \
+                            replaced by underscores")
 
     args = parser.parse_args()
 
     if not os.path.exists(args.stlfile):
-        sys.exit(f'ERROR: file args.stlfile was not found!')
+        sys.exit(f'ERROR: file {args.stlfile} was not found!')
     varname = get_varname(args.stlfile, args.name)
 
     stl_dimensions = MeshWithBounds.from_file(args.stlfile)
@@ -39,7 +46,6 @@ def main():
 # the logic is easy from there
 
     print("// File:", args.stlfile)
-    lst = ['obj =("', args.stlfile, '");']
     obj = ['\t\timport("', args.stlfile, '");']
 
     print("// X size:", stl_dimensions['xsize'])
