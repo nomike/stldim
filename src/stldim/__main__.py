@@ -15,9 +15,17 @@ import os
 import sys
 
 from docopt import docopt
+import jinja2
 
 from stldim import MeshWithBounds, get_varname, version
 
+def generate_openscad_lib(stl_dimensions, varname, stlfile):
+    """
+    Generate an OpenSCAD library file with the dimensions of the STL file
+    """
+    environment = jinja2.Environment(loader=jinja2.FileSystemLoader('.'))
+    template = environment.get_template('stldim/templates/openscad_lib.jinja2')
+    print(template.render(stl_dimensions=stl_dimensions, varname=varname, stlfile=stlfile))
 
 def main():
     """
@@ -31,74 +39,7 @@ def main():
 
     stl_dimensions = MeshWithBounds.from_file(args['<stlfile>'])
 
-
-# the logic is easy from there
-
-    print("// File:", args['<stlfile>'])
-    obj = ['\t\timport("', args['<stlfile>'], '");']
-
-    print("// X size:", stl_dimensions['xsize'])
-    print(f"{varname}_xsize = {stl_dimensions['xsize']};")
-    print("// Y size:", stl_dimensions['ysize'])
-    print(f"{varname}_ysize = {stl_dimensions['ysize']};")
-    print("// Z size:", stl_dimensions['zsize'])
-    print(f"{varname}_zsize = {stl_dimensions['zsize']};")
-    print("// X position:", stl_dimensions['minx'])
-    print(f"{varname}_xposition = {stl_dimensions['minx']};")
-    print("// Y position:", stl_dimensions['miny'])
-    print(f"{varname}_yposition = {stl_dimensions['miny']};")
-    print("// Z position:", stl_dimensions['minz'])
-    print(f"{varname}_zposition = {stl_dimensions['minz']};")
-
-    # --------------------
-    print("NE=1; NW=2; SW=3; SE=4; CTR=5; CTRXY=6;")
-
-    print(f"module {varname}_obj2origin (where) {{")
-    print("\tif (where == NE) {")
-    print(f"\t\t{varname}_objNE ();")
-    print("\t}")
-    print("")
-
-    print("\tif (where == NW) {")
-    print("\t\ttranslate([", -stl_dimensions['xsize'], ",", 0, ",", 0, "])")
-    print(f"\t\t{varname}_objNE ();")
-    print("\t}")
-    print("")
-
-    print("\tif (where == SW) {")
-    print("\t\ttranslate([", -stl_dimensions['xsize'],
-          ",", -stl_dimensions['ysize'], ",", 0, "])")
-    print(f"\t\t{varname}_objNE ();")
-    print("\t}")
-    print("")
-
-    print("\tif (where == SE) {")
-    print(
-        "\t\ttranslate([", 0, ",", -stl_dimensions['ysize'], ",", 0, ",", "])")
-    print(f"\t\t{varname}_objNE ();")
-    print("\t}")
-    print("")
-
-    print("\tif (where == CTR) {")
-    print("\ttranslate([", -stl_dimensions['midx'], ",", -
-          stl_dimensions['midy'], ",", -stl_dimensions['midz'], "])")
-    print(f"\t\t{varname}_objNE ();")
-    print("\t}")
-    print("")
-
-    print("\tif (where == CTRXY) {")
-    print("\ttranslate([", -stl_dimensions['midx'],
-          ",", -stl_dimensions['midy'], ",", 0, "])")
-    print(f"\t\t{varname}_objNE ();")
-    print("\t}")
-    print("}")
-    print("")
-
-    print(f"module {varname}_objNE () {{")
-    print("\ttranslate([", -stl_dimensions['minx'], ",", -
-          stl_dimensions['miny'], ",", -stl_dimensions['minz'], "])")
-    print("".join(obj))
-    print("}")
+    generate_openscad_lib(stl_dimensions, varname, args['<stlfile>'])
 
 
 if __name__ == '__main__':
