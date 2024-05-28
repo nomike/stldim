@@ -10,7 +10,7 @@ authors = [
     { name="nomike Postmann", email="nomike@nomike.com" },
 ]
 dependencies = [
-    "argparse",
+    "docopt",
     "numpy-stl",
 ]
 description = "Get dimensions of an STL file"
