@@ -93,14 +93,17 @@ class MeshWithBounds(mesh.Mesh):
             'mid_z': round(self.midz, 3),
         }
 
-    def __init__(self, data, calculate_normals=True, name='', filename=None, **kwargs):
+    # pylint: disable=too-many-arguments
+    def __init__(self, data, calculate_normals=True, name='', filename=None, varname=None,
+                 **kwargs):
         super().__init__(data, calculate_normals=calculate_normals, name=name, **kwargs)
         self.filename = filename
+        self._varname = varname
 
     # pylint: disable=too-many-arguments
     @classmethod
     def from_file(cls, filename, calculate_normals=True, fh=None, mode=stl.Mode.AUTOMATIC,
-                  speedups=True, **kwargs):
+                  speedups=True, varname=None, **kwargs):
         """Load a mesh from a STL file and store the filename.
 
         Args:
@@ -126,26 +129,26 @@ class MeshWithBounds(mesh.Mesh):
                 )
         return cls(
             data, calculate_normals, name=name, filename = filename,
-            speedups=speedups, **kwargs
+            speedups=speedups, varname=varname, **kwargs
         )
 
+    @property
+    def sanitized_filename(self):
+        """
+        Replace every non-alphanumeric character with an underscore
+        """
 
-def sanitize_filename(stlfile):
-    """
-    Replace every non-alphanumeric character with an underscore
-    """
+        sanitized = re.sub(r'\W', '_', os.path.basename(self.filename)).lower()
+        match = re.search(r"\D", sanitized)
+        if match:
+            return "_" * (match.start()) + sanitized[match.start():]
+        return sanitized
 
-    sanitized = re.sub(r'\W', '_', os.path.basename(stlfile)).lower()
-    match = re.search(r"\D", sanitized)
-    if match:
-        return "_" * (match.start()) + sanitized[match.start():]
-    return sanitized
-
-
-def get_varname(filename, name):
-    """
-    Return a sanitized variable name based on the filename and the provided name.
-    """
-    if name:
-        return name
-    return sanitize_filename(filename)
+    @property
+    def varname(self):
+        """
+        Return a sanitized variable name based on the filename or the provided name.
+        """
+        if self._varname:
+            return self._varname
+        return self.sanitized_filename
