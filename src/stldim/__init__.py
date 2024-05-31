@@ -98,7 +98,8 @@ class MeshWithBounds(mesh.Mesh):
         self.filename = filename
 
     @classmethod
-    def from_file(cls, filename, calculate_normals=True, fh=None, mode=stl.Mode.AUTOMATIC, speedups=True, **kwargs):
+    def from_file(cls, filename, calculate_normals=True, fh=None, mode=stl.Mode.AUTOMATIC,
+                  speedups=True, **kwargs):
         """Load a mesh from a STL file and store the filename.
 
         Args:
