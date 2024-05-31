@@ -6,6 +6,7 @@ dimensions.
 import os
 import re
 
+import jinja2
 import stl
 from stl import mesh
 
@@ -152,3 +153,11 @@ class MeshWithBounds(mesh.Mesh):
         if self._varname:
             return self._varname
         return self.sanitized_filename
+
+    def render(self, template):
+        """
+        Render the template with the mesh's dimensions
+        """
+        environment = jinja2.Environment(loader=jinja2.PackageLoader('stldim', 'templates'))
+        template = environment.get_template(f'{template}.jinja2')
+        return template.render(mesh=self)
