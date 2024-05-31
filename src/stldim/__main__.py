@@ -17,7 +17,7 @@ import sys
 from docopt import docopt
 import jinja2
 
-from stldim import MeshWithBounds, get_varname, version
+from stldim import MeshWithBounds, version
 
 def generate_openscad_lib(stl_dimensions, varname, stlfile):
     """
@@ -35,11 +35,10 @@ def main():
 
     if not os.path.exists(args['<stlfile>']):
         sys.exit(f"ERROR: file {args['<stlfile>']} was not found!")
-    varname = get_varname(args['<stlfile>'], args['--name'])
 
     stl_dimensions = MeshWithBounds.from_file(args['<stlfile>'])
 
-    generate_openscad_lib(stl_dimensions, varname, args['<stlfile>'])
+    generate_openscad_lib(stl_dimensions, stl_dimensions.varname, args['<stlfile>'])
 
 
 if __name__ == '__main__':
