@@ -97,6 +97,7 @@ class MeshWithBounds(mesh.Mesh):
         super().__init__(data, calculate_normals=calculate_normals, name=name, **kwargs)
         self.filename = filename
 
+    # pylint: disable=too-many-arguments
     @classmethod
     def from_file(cls, filename, calculate_normals=True, fh=None, mode=stl.Mode.AUTOMATIC,
                   speedups=True, **kwargs):
@@ -119,7 +120,7 @@ class MeshWithBounds(mesh.Mesh):
                 fh, mode=mode, speedups=speedups
             )
         else:
-            with open(filename, 'rb') as fh:
+            with open(filename, 'rb') as fh: # pylint: disable=redefined-argument-from-local
                 name, data = cls.load(
                     fh, mode=mode, speedups=speedups
                 )
