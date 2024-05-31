@@ -93,11 +93,6 @@ class MeshWithBounds(mesh.Mesh):
             'mid_z': round(self.midz, 3),
         }
 
-    def __getitem__(self, key):
-        """
-        Allow the object to be accessed like a dictionary.
-        """
-        return getattr(self, key)
 
 def sanitize_filename(stlfile):
     """
