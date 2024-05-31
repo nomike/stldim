@@ -17,3 +17,11 @@ def test_3dbenchy():
     assert pytest.approx(stl_dimensions.maxy) == 15.502
     assert pytest.approx(stl_dimensions.minz) == 0.0
     assert pytest.approx(stl_dimensions.maxz) == 48.0
+
+def test_filename():
+    """
+    Test the filename property
+    """
+    stl_dimensions = stldim.MeshWithBounds.from_file("tests/3DBenchy.stl")
+
+    assert stl_dimensions.filename == "tests/3DBenchy.stl"

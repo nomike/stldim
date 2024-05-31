@@ -93,6 +93,40 @@ class MeshWithBounds(mesh.Mesh):
             'mid_z': round(self.midz, 3),
         }
 
+    def __init__(self, data, calculate_normals=True, name='', filename=None, **kwargs):
+        super().__init__(data, calculate_normals=calculate_normals, name=name, **kwargs)
+        self.filename = filename
+
+    @classmethod
+    def from_file(cls, filename, calculate_normals=True, fh=None, mode=stl.Mode.AUTOMATIC, speedups=True, **kwargs):
+        """Load a mesh from a STL file and store the filename.
+
+        Args:
+            filename (str): The file to load.
+            calculate_normals (bool, optional): Whether to update the normals (default: True).
+            fh (file, optional): The file handle to open (default: None).
+            mode (stl.mesh.Mode, optional): The STL file mode (default: stl.Mode.AUTOMATIC).
+            speedups (bool, optional): Whether to use optimizations (default: True).
+            kwargs: Additional keyword arguments passed to the Mesh constructor.
+
+        Returns:
+            MeshWithBounds: A new MeshWithBounds object with the loaded mesh data and filename.
+        """
+
+        if fh:
+            name, data = cls.load(
+                fh, mode=mode, speedups=speedups
+            )
+        else:
+            with open(filename, 'rb') as fh:
+                name, data = cls.load(
+                    fh, mode=mode, speedups=speedups
+                )
+        return cls(
+            data, calculate_normals, name=name, filename = filename,
+            speedups=speedups, **kwargs
+        )
+
 
 def sanitize_filename(stlfile):
     """
