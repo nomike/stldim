@@ -15,17 +15,8 @@ import os
 import sys
 
 from docopt import docopt
-import jinja2
 
 from stldim import MeshWithBounds, version
-
-def generate_openscad_lib(stl_dimensions, varname, stlfile):
-    """
-    Generate an OpenSCAD library file with the dimensions of the STL file
-    """
-    environment = jinja2.Environment(loader=jinja2.PackageLoader('stldim', 'templates'))
-    template = environment.get_template('openscad_lib.jinja2')
-    print(template.render(stl_dimensions=stl_dimensions, varname=varname, stlfile=stlfile))
 
 def main():
     """
@@ -38,7 +29,7 @@ def main():
 
     stl_dimensions = MeshWithBounds.from_file(args['<stlfile>'])
 
-    generate_openscad_lib(stl_dimensions, stl_dimensions.varname, args['<stlfile>'])
+    print(stl_dimensions.render('openscad_lib'))
 
 
 if __name__ == '__main__':

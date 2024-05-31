@@ -105,3 +105,60 @@ def test_varname():
     stl_dimensions = stldim.MeshWithBounds.from_file("tests/test.stl", varname="foobar")
 
     assert stl_dimensions.varname == "foobar"
+
+def test_render_openscad_lib():
+    """
+    Test rendering the openscad_lib template
+    """
+    stl_dimensions = stldim.MeshWithBounds.from_file("tests/test.stl")
+
+    lib = stl_dimensions.render('openscad_lib')
+
+    print(lib)
+    assert lib == """// File: tests/test.stl
+
+test_stl_xsize = 10.0;
+test_stl_ysize = 10.0;
+test_stl_zsize = 10.0;
+test_stl_xposition = 0.0;
+test_stl_yposition = 0.0;
+test_stl_zposition = 0.0;
+
+
+NE=1; NW=2; SW=3; SE=4; CTR=5; CTRXY=6;
+
+module test_stl_obj2origin (where) {
+    if (where == NE) {
+        test_stl_objNE ();
+    }
+
+    if (where == NW) {
+        translate([-10.0,0,0])
+        test_stl_objNE ();
+    }
+
+    if (where == SW) {
+        translate([-10.0,-10.0,0])
+        test_stl_objNE ();
+    }
+
+    if (where == SE) {
+        translate([0,-10.0,0])
+        test_stl_objNE ();
+    }
+
+    if (where == CTR) {
+        translate([-5.0,-5.0,-5.0])
+        test_stl_objNE ();
+    }
+
+    if (where == CTRXY) {
+        translate([-5.0,-5.0,0])
+        test_stl_objNE ();
+    }
+}
+    
+module test_stl_objNE () {
+    translate([ 0.0,0.0,0.0])
+        import("");
+}"""
