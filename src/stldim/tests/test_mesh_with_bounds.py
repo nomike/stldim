@@ -5,6 +5,7 @@ Test the MeshWithBounds class
 import pytest
 import stldim
 
+
 def test_3dbenchy():
     """
     Calculate the dimmensions of the 3DBenchy model and compare them to known values.
@@ -18,6 +19,7 @@ def test_3dbenchy():
     assert pytest.approx(stl_dimensions.minz) == 0.0
     assert pytest.approx(stl_dimensions.maxz) == 48.0
 
+
 def test_filename():
     """
     Test the filename property
@@ -25,6 +27,7 @@ def test_filename():
     stl_dimensions = stldim.MeshWithBounds.from_file("tests/3DBenchy.stl")
 
     assert stl_dimensions.filename == "tests/3DBenchy.stl"
+
 
 def test_sanitized_filename_plain():
     """
@@ -34,6 +37,7 @@ def test_sanitized_filename_plain():
 
     assert stl_dimensions.sanitized_filename == "test_stl"
 
+
 def test_spaces():
     """
     Test with spaces in the filename
@@ -41,6 +45,7 @@ def test_spaces():
     stl_dimensions = stldim.MeshWithBounds.from_file("tests/test test.stl")
 
     assert stl_dimensions.sanitized_filename == "test_test_stl"
+
 
 def test_special_chars():
     """
@@ -50,6 +55,7 @@ def test_special_chars():
 
     assert stl_dimensions.sanitized_filename == "test___________stl"
 
+
 def test_leading_numbers():
     """
     Test with leading numbers in the filename
@@ -57,6 +63,7 @@ def test_leading_numbers():
     stl_dimensions = stldim.MeshWithBounds.from_file("tests/11test.stl")
 
     assert stl_dimensions.sanitized_filename == "__test_stl"
+
 
 def test_trailing_numbers():
     """
@@ -66,6 +73,7 @@ def test_trailing_numbers():
 
     assert stl_dimensions.sanitized_filename == "test11_stl"
 
+
 def test_no_extension():
     """
     Test with a filename with no extension
@@ -73,6 +81,7 @@ def test_no_extension():
     stl_dimensions = stldim.MeshWithBounds.from_file("tests/test")
 
     assert stl_dimensions.sanitized_filename == "test"
+
 
 def test_subdirectory():
     """
@@ -82,6 +91,7 @@ def test_subdirectory():
 
     assert stl_dimensions.sanitized_filename == "test_stl"
 
+
 def test_empty_varname():
     """
     Test with an empty varnames
@@ -89,6 +99,7 @@ def test_empty_varname():
     stl_dimensions = stldim.MeshWithBounds.from_file("tests/test.stl", varname="")
 
     assert stl_dimensions.varname == "test_stl"
+
 
 def test_none_varname():
     """
@@ -98,6 +109,7 @@ def test_none_varname():
 
     assert stl_dimensions.varname == "test_stl"
 
+
 def test_varname():
     """
     Test with a varname set
@@ -105,6 +117,7 @@ def test_varname():
     stl_dimensions = stldim.MeshWithBounds.from_file("tests/test.stl", varname="foobar")
 
     assert stl_dimensions.varname == "foobar"
+
 
 def test_render_openscad_lib():
     """
@@ -157,7 +170,7 @@ module test_stl_obj2origin (where) {
         test_stl_objNE ();
     }
 }
-    
+
 module test_stl_objNE () {
     translate([ 0.0,0.0,0.0])
         import("");
