@@ -124,12 +124,12 @@ class MeshWithBounds(mesh.Mesh):
                 fh, mode=mode, speedups=speedups
             )
         else:
-            with open(filename, 'rb') as fh: # pylint: disable=redefined-argument-from-local
+            with open(filename, 'rb') as fh:  # pylint: disable=redefined-argument-from-local
                 name, data = cls.load(
                     fh, mode=mode, speedups=speedups
                 )
         return cls(
-            data, calculate_normals, name=name, filename = filename,
+            data, calculate_normals, name=name, filename=filename,
             speedups=speedups, varname=varname, **kwargs
         )
 

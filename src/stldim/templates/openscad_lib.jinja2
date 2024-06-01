@@ -40,7 +40,7 @@ module {{mesh.varname }}_obj2origin (where) {
         {{mesh.varname}}_objNE ();
     }
 }
-    
+
 module {{mesh.varname }}_objNE () {
     translate([ {{ mesh.minx }},{{ mesh.miny }},{{ mesh.minz }}])
         import("{{ stlfile }}");

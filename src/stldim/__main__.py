@@ -18,6 +18,7 @@ from docopt import docopt
 
 from stldim import MeshWithBounds, version
 
+
 def main():
     """
     Main function
