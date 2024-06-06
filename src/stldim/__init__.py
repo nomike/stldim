@@ -160,4 +160,4 @@ class MeshWithBounds(mesh.Mesh):
         """
         environment = jinja2.Environment(loader=jinja2.PackageLoader('stldim', 'templates'))
         template = environment.get_template(f'{template}.jinja2')
-        return template.render(mesh=self)
+        return template.render(mesh=self, os=os)
