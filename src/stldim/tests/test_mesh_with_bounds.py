@@ -172,7 +172,7 @@ module test_stl_obj2origin (where) {
 }
 
 module test_stl_objNE () {
-    translate([ 0.0,0.0,0.0])
+    translate([-0.0, -0.0, -0.0])
         import("tests/test.stl");
 }"""
 
@@ -229,6 +229,6 @@ module test_stl_obj2origin (where) {
 }
 
 module test_stl_objNE () {
-    translate([ 0.0,0.0,0.0])
+    translate([-0.0, -0.0, -0.0])
         import("test.stl");
 }"""
