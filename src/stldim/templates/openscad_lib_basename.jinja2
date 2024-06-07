@@ -42,6 +42,6 @@ module {{mesh.varname }}_obj2origin (where) {
 }
 
 module {{mesh.varname }}_objNE () {
-    translate([ {{ mesh.minx }},{{ mesh.miny }},{{ mesh.minz }}])
+    translate([{{ - mesh.minx }}, {{ - mesh.miny }}, {{ - mesh.minz }}])
         import("{{ os.path.basename(mesh.filename) }}");
 }
