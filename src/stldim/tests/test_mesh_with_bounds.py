@@ -176,6 +176,7 @@ module test_stl_objNE () {
         import("tests/test.stl");
 }"""
 
+
 def test_render_openscad_lib_basename():
     """
     Test rendering the openscad_lib template
